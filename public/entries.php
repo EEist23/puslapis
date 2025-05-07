@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $db = new Database();
-$conn = $db->conn;
+$conn = $db->getConnection(); // ✅ teisingai
 
 // Gaunam visus įrašus kartu su vartotojo vardu
 $sql = "SELECT e.*, u.username 
