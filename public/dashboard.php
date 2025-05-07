@@ -5,12 +5,6 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit;
 }
-
-$db = new Database();
-$user = new User($db);
-
-$currentUser = $user->getById($_SESSION['user_id']);
-
 ?>
 
 <!DOCTYPE html>
@@ -20,17 +14,28 @@ $currentUser = $user->getById($_SESSION['user_id']);
     <title>Valdymo panelė</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="container mt-5">
-    <h2>Sveiki, <?= htmlspecialchars($currentUser['name']) ?>!</h2>
+<body>
 
-    <p>
-        <a href="new_entry.php" class="btn btn-primary">Naujas įrašas</a>
-        <a href="entries.php" class="btn btn-info">Peržiūrėti įrašus</a>
-        <a href="change_password.php" class="btn btn-warning">Keisti slaptažodį</a>
-        <a href="logout.php" class="btn btn-danger">Atsijungti</a>
-    </p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Pagrindinis</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="new_entry.php">➕ Naujas įrašas</a></li>
+        <li class="nav-item"><a class="nav-link" href="entries.php">📋 Visi įrašai</a></li>
+        <li class="nav-item"><a class="nav-link" href="change_password.php">🔐 Keisti slaptažodį</a></li>
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link text-danger" href="logout.php">🚪 Atsijungti</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-    <hr>
-    <p>Čia galite valdyti savo įrašus, matyti kitų naudotojų įrašus ir tvarkyti paskyrą.</p>
+<div class="container mt-5">
+    <h2>Sveiki, <?= htmlspecialchars($_SESSION['username']) ?>!</h2>
+    <p>Pasirinkite veiksmą naudodami meniu viršuje.</p>
+</div>
+
 </body>
 </html>
