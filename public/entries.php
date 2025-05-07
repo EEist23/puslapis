@@ -15,7 +15,9 @@ $sql = "SELECT e.*, u.username
         JOIN users u ON e.user_id = u.id 
         ORDER BY e.created_at DESC";
 
-$result = $conn->query($sql);
+$stmt = $conn->query($sql);
+
+// Naudojame PDO metodo fetch, kad gautume asociatyvinį masyvą
 ?>
 
 <!DOCTYPE html>
@@ -42,11 +44,11 @@ $result = $conn->query($sql);
             </tr>
         </thead>
         <tbody>
-            <?php while ($row = $result->fetch_assoc()): ?>
+            <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
                 <tr>
                     <td><?= htmlspecialchars($row['username']) ?></td>
                     <td><?= htmlspecialchars($row['title']) ?></td>
-                    <td><?= nl2br(htmlspecialchars($row['comment'])) ?></td>
+                    <td><?= nl2br(htmlspecialchars($row['content'])) ?></td> <!-- Pakeistas 'comment' į 'content' -->
                     <td><?= htmlspecialchars($row['location']) ?></td>
                     <td><?= $row['created_at'] ?></td>
                     <td><?= $row['ip_address'] ?></td>

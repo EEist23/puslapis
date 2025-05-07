@@ -6,21 +6,22 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$db = new Database();
+$db = new Database();  // Sukuriame Database klasės objektą
 $userId = $_SESSION['user_id'];
 $message = '';
 
 // Įrašymo veiksmas
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'] ?? '';
-    $comment = $_POST['comment'] ?? '';
+    $comment = $_POST['comment'] ?? '';  // Naudojame $comment, kuris dabar bus įrašytas į "content" stulpelį
     $location = $_POST['location'] ?? '';
     $ip = $_SERVER['REMOTE_ADDR'];
 
     if (!empty($title) && !empty($comment)) {
-        $stmt = $db->conn->prepare("INSERT INTO entries (user_id, title, comment, location, created_at, ip_address) VALUES (?, ?, ?, ?, NOW(), ?)");
-        $stmt->bind_param("issss", $userId, $title, $comment, $location, $ip);
-        $stmt->execute();
+        // Atliksime įrašymą į duomenų bazę, naudodami teisingą stulpelį "content"
+        $sql = "INSERT INTO entries (user_id, title, content, location, created_at, ip_address) VALUES (?, ?, ?, ?, NOW(), ?)";
+        $stmt = $db->getConnection()->prepare($sql);
+        $stmt->execute([$userId, $title, $comment, $location, $ip]);  // Naudojame "content" stulpelį
         $message = 'Įrašas sėkmingai išsaugotas.';
     } else {
         $message = 'Prašome užpildyti privalomus laukus.';
